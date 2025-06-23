@@ -156,8 +156,8 @@ export default function Mentors() {
             <tr key={m.id} className="border-t hover:bg-green-50 transition">
               <td className="px-4 py-2"><img src={m.avatar} alt={m.name} className="w-10 h-10 rounded-full" /></td>
               <td className="px-4 py-2 font-semibold cursor-pointer hover:underline" onClick={() => openDetail(m)}>{m.name}</td>
-              <td className="px-4 py-2">{m.email}</td>
-              <td className="px-4 py-2">{m.phone}</td>
+              <td className="px-4 py-2 text-[12px]">{m.email}</td>
+              <td className="px-4 py-2 text-[12px]">{m.phone}</td>
               <td className="px-4 py-2">
                 {m.skills.map(s => <span key={s} className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">{s}</span>)}
               </td>
@@ -168,8 +168,8 @@ export default function Mentors() {
                 {getMenteeNames(m).length ? getMenteeNames(m).join(', ') : <span className="text-gray-400">None</span>}
               </td>
               {isAdminOrStaff && (
-                <td className="px-4 py-2">
-                  <button className="text-green-700 hover:underline flex items-center gap-1 mr-2" onClick={() => openEdit(m)}>
+                <td className="px-4 py-2 text-[12px]">
+                  <button className="text-green-700  hover:underline flex items-center gap-1 mr-2" onClick={() => openEdit(m)}>
                     <PencilSquareIcon className="w-5 h-5" /> Edit
                   </button>
                   <button className="text-red-600 hover:underline flex items-center gap-1 mr-2" onClick={() => handleDelete(m.id)}>

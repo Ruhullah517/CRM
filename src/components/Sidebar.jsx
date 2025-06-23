@@ -44,7 +44,7 @@ export default function Sidebar() {
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
-                  `px-4 py-2 rounded hover:bg-green-600 transition flex items-center gap-2 justify-center md:justify-start ${isActive ? 'bg-green-800 font-semibold' : ''}`
+                  `px-4 py-2 rounded hover:bg-green-600 text-[15px] transition flex items-center gap-2 justify-center md:justify-start ${isActive ? 'bg-green-800 font-semibold' : ''}`
                 }
               >
                 <Icon className="w-5 h-5" />
