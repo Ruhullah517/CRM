@@ -7,6 +7,7 @@ import {
   UserCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import { mockContracts } from "../utils/mockData";
 
 const initialContracts = [
   {
@@ -39,172 +40,84 @@ const freelancers = ['Anna White', 'James Black'];
 const templates = ['Trainer Agreement', 'Mentor Contract'];
 
 const statusColors = {
-  Signed: 'bg-green-100 text-green-800',
-  Pending: 'bg-yellow-100 text-yellow-800',
-  Expired: 'bg-red-100 text-red-800',
+  signed: 'bg-green-100 text-green-800',
+  pending: 'bg-yellow-100 text-yellow-800',
+  expired: 'bg-red-100 text-red-800',
 };
 
-export default function Contracts() {
-  const { user } = useAuth();
-  const isAdminOrStaff = user?.role === 'admin' || user?.role === 'staff';
-  const [contracts, setContracts] = useState(initialContracts);
-  const [showForm, setShowForm] = useState(false);
-  const [showDetail, setShowDetail] = useState(null); // contract object
-  const [form, setForm] = useState({
-    id: null, role: roles[0], status: statuses[0], freelancer: freelancers[0], template: templates[0], rate: '', signedBy: '', signedDate: '', files: []
-  });
-
-  function openAdd() {
-    setForm({ id: null, role: roles[0], status: statuses[0], freelancer: freelancers[0], template: templates[0], rate: '', signedBy: '', signedDate: '', files: [] });
-    setShowForm(true);
-  }
-  function openEdit(c) {
-    setForm(c);
-    setShowForm(true);
-  }
-  function handleFormChange(e) {
-    const { name, value, files } = e.target;
-    if (name === 'files') {
-      setForm(f => ({ ...f, files: files ? Array.from(files).map(f => f.name) : [] }));
-    } else {
-      setForm(f => ({ ...f, [name]: value }));
-    }
-  }
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    if (form.id) {
-      setContracts(cs => cs.map(c => c.id === form.id ? { ...form } : c));
-    } else {
-      setContracts(cs => [...cs, { ...form, id: Date.now() }]);
-    }
-    setShowForm(false);
-  }
-  function openDetail(c) {
-    setShowDetail(c);
-  }
-  function closeDetail() {
-    setShowDetail(null);
-  }
-
+const ContractList = ({ onSelect, onAdd }) => {
+  const [search, setSearch] = useState("");
+  const filtered = mockContracts.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
   return (
-    <div className="max-w-4xl w-full mx-auto mt-6 bg-white rounded shadow p-4 sm:p-8">
-      <h1 className="text-2xl font-bold mb-6">Contracts</h1>
-      {isAdminOrStaff && (
-        <button
-          className="mb-4 bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 shadow flex items-center gap-2"
-          onClick={openAdd}
-        >
-          <PlusIcon className="w-5 h-5" /> Add Contract
-        </button>
-      )}
-      <div className="overflow-x-auto rounded">
-        <table className="min-w-full bg-white rounded shadow mb-8">
+    <div className="max-w-5xl mx-auto p-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
+        <input placeholder="Search contracts..." value={search} onChange={e => setSearch(e.target.value)} className="px-3 py-2 border rounded w-full sm:w-64" />
+        <button onClick={onAdd} className="px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800 transition">Add Contract</button>
+      </div>
+      <div className="overflow-x-auto rounded shadow bg-white">
+        <table className="min-w-full text-left">
           <thead>
             <tr className="bg-green-50">
-              <th className="px-4 py-2 text-left font-semibold text-green-900">Name</th>
-              <th className="px-4 py-2 text-left font-semibold text-green-900">Role</th>
-              <th className="px-4 py-2 text-left font-semibold text-green-900">Status</th>
-              <th className="px-4 py-2 text-left font-semibold text-green-900">Freelancer</th>
-              <th className="px-4 py-2 text-left font-semibold text-green-900">Actions</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Role</th>
+              <th className="px-4 py-2">Status</th>
+              <th className="px-4 py-2">Created By</th>
+              <th className="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody>
-            {contracts.map((c) => (
+            {filtered.map(c => (
               <tr key={c.id} className="border-t hover:bg-green-50 transition">
                 <td className="px-4 py-2 font-semibold">{c.name}</td>
                 <td className="px-4 py-2">{c.role}</td>
-                <td className="px-4 py-2">
-                  <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[c.status]}`}>{c.status}</span>
-                </td>
-                <td className="px-4 py-2 flex items-center gap-2">
-                  <UserCircleIcon className="w-7 h-7 text-blue-700 bg-blue-100 rounded-full p-1" />
-                  {c.freelancer}
-                </td>
-                <td className="px-4 py-2">
-                  <button className="text-blue-600 hover:underline mr-2 flex items-center gap-1" onClick={() => openDetail(c)}>
-                    <EyeIcon className="w-5 h-5" /> View
-                  </button>
-                  {isAdminOrStaff && (
-                    <button className="text-green-700 hover:underline flex items-center gap-1" onClick={() => openEdit(c)}>
-                      <PencilSquareIcon className="w-5 h-5" /> Edit
-                    </button>
-                  )}
-                </td>
+                <td className="px-4 py-2"><span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[c.status?.toLowerCase()] || 'bg-gray-100 text-gray-700'}`}>{c.status}</span></td>
+                <td className="px-4 py-2">{c.createdBy}</td>
+                <td className="px-4 py-2"><button onClick={() => onSelect(c)} className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200">View</button></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {/* Detail Modal */}
-      {showDetail && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-2">
-          <div className="bg-white rounded shadow-lg p-4 sm:p-8 w-full max-w-lg relative">
-            <button className="absolute top-2 right-2 text-gray-500 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center" onClick={closeDetail}><XMarkIcon className="w-5 h-5" /></button>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <span className="inline-block w-9 h-9 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-bold text-lg">{showDetail.name[0]}</span>
-              {showDetail.name}
-            </h2>
-            <div className="mb-2"><b>Role:</b> {showDetail.role}</div>
-            <div className="mb-2"><b>Status:</b> <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[showDetail.status]}`}>{showDetail.status}</span></div>
-            <div className="mb-2 flex items-center gap-2"><b>Freelancer:</b> <UserCircleIcon className="w-7 h-7 text-blue-700 bg-blue-100 rounded-full p-1" /> {showDetail.freelancer}</div>
-            <div className="mb-2"><b>Files:</b> {showDetail.files && showDetail.files.length > 0 ? showDetail.files.join(', ') : 'None'}</div>
-            <div className="mb-2"><b>Notes:</b> {showDetail.notes}</div>
-          </div>
-        </div>
-      )}
-      {/* Add/Edit Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-2">
-          <div className="bg-white rounded shadow-lg p-4 sm:p-8 w-full max-w-lg relative">
-            <button className="absolute top-2 right-2 text-gray-500 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center" onClick={() => setShowForm(false)}><XMarkIcon className="w-5 h-5" /></button>
-            <h2 className="text-xl font-bold mb-4">{form.id ? 'Edit' : 'Add'} Contract</h2>
-            <form className="space-y-4" onSubmit={handleFormSubmit}>
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleFormChange}
-                placeholder="Contract Name"
-                className="w-full px-4 py-2 border rounded"
-                required
-              />
-              <input
-                name="role"
-                value={form.role}
-                onChange={handleFormChange}
-                placeholder="Role"
-                className="w-full px-4 py-2 border rounded"
-                required
-              />
-              <select name="status" value={form.status} onChange={handleFormChange} className="w-full px-4 py-2 border rounded">
-                {statuses.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-              <input
-                name="freelancer"
-                value={form.freelancer}
-                onChange={handleFormChange}
-                placeholder="Freelancer"
-                className="w-full px-4 py-2 border rounded"
-                required
-              />
-              <input
-                name="files"
-                value={form.files}
-                onChange={handleFormChange}
-                placeholder="Files (comma separated)"
-                className="w-full px-4 py-2 border rounded"
-              />
-              <textarea
-                name="notes"
-                value={form.notes}
-                onChange={handleFormChange}
-                placeholder="Notes"
-                className="w-full px-4 py-2 border rounded min-h-[80px]"
-              />
-              <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 shadow">{form.id ? 'Update' : 'Add'} Contract</button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
-}
+};
+
+const ContractDetail = ({ contract, onBack, onEdit }) => (
+  <div className="max-w-2xl mx-auto p-4 bg-white rounded shadow mt-6">
+    <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+    <h2 className="text-xl font-bold mb-2">{contract.name}</h2>
+    <div className="mb-2"><span className="font-semibold">Role:</span> {contract.role}</div>
+    <div className="mb-2"><span className="font-semibold">Status:</span> <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[contract.status?.toLowerCase()] || 'bg-gray-100 text-gray-700'}`}>{contract.status}</span></div>
+    <div className="mb-2"><span className="font-semibold">Created By:</span> {contract.createdBy}</div>
+    <div className="mb-2"><span className="font-semibold">Signed URL:</span> <a href={contract.signedUrl} className="text-blue-700 hover:underline">{contract.signedUrl}</a></div>
+    <button onClick={onEdit} className="mt-4 px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800">Edit</button>
+  </div>
+);
+
+const ContractForm = ({ contract, onBack }) => (
+  <div className="max-w-xl mx-auto p-4 bg-white rounded shadow mt-6">
+    <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+    <h2 className="text-xl font-bold mb-4">{contract ? "Edit" : "Add"} Contract</h2>
+    {/* Placeholder form fields */}
+    <form className="space-y-4">
+      <input placeholder="Name" defaultValue={contract?.name} className="w-full px-4 py-2 border rounded" />
+      <input placeholder="Role" defaultValue={contract?.role} className="w-full px-4 py-2 border rounded" />
+      <input placeholder="Status" defaultValue={contract?.status} className="w-full px-4 py-2 border rounded" />
+      <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold">{contract ? "Save" : "Add"}</button>
+    </form>
+  </div>
+);
+
+const Contracts = () => {
+  const { user } = useAuth();
+  const isAdminOrStaff = user?.role === 'admin' || user?.role === 'staff';
+  const [view, setView] = useState("list");
+  const [selected, setSelected] = useState(null);
+
+  if (view === "detail" && selected) return <ContractDetail contract={selected} onBack={() => setView("list")} onEdit={() => setView("edit")} />;
+  if (view === "edit" && selected) return <ContractForm contract={selected} onBack={() => { setView("detail"); }} />;
+  if (view === "add") return <ContractForm onBack={() => setView("list")} />;
+  return <ContractList onSelect={c => { setSelected(c); setView("detail"); }} onAdd={() => setView("add")} />;
+};
+
+export default Contracts;

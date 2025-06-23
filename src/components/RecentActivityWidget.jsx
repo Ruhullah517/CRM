@@ -19,15 +19,15 @@ const typeColors = {
 
 export default function RecentActivityWidget() {
   return (
-    <div className="bg-white rounded shadow p-6 mb-8">
-      <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
-      <ul>
+    <div className="bg-white rounded shadow p-3 mb-8">
+      <h2 className="text-xl font-bold mb-4 text-left">Recent Activity</h2>
+      <ul className="space-y-2">
         {activities.map((a, i) => (
-          <li key={i} className="mb-3 flex items-center gap-3">
-            <span className={`px-2 py-1 rounded text-xs font-semibold ${typeColors[a.type]}`}>{a.type}</span>
-            <span className="font-semibold">{a.name}</span>
-            <span className="text-gray-500">{a.action}</span>
-            <span className="ml-auto text-xs text-gray-400 flex items-center gap-1">
+          <li key={i} className="flex items-center gap-3 p-1 rounded hover:bg-green-50 transition min-h-[48px] overflow-hidden">
+            <span className={`px-2 py-1 rounded text-xs font-semibold ${typeColors[a.type]} whitespace-nowrap`}>{a.type}</span>
+            <span className="font-semibold text-xs text-gray-800 flex-1 w-0 truncate text-left">{a.name}</span>
+            <span className="text-gray-500 text-xs flex-1 w-0 truncate text-right">{a.action}</span>
+            <span className="ml-auto text-xs text-gray-400 flex items-center gap-1 whitespace-nowrap">
               <ClockIcon className="w-4 h-4" /> {a.date}
             </span>
           </li>

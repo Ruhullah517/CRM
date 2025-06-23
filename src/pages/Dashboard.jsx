@@ -2,61 +2,31 @@ import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import RemindersWidget from '../components/RemindersWidget';
 import RecentActivityWidget from '../components/RecentActivityWidget';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import {
   CalendarDaysIcon,
   BriefcaseIcon,
   UserGroupIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/outline';
+import { mockDashboard } from "../utils/mockData";
 
 const summary = [
-  { label: 'Upcoming Training Events', value: 2, icon: CalendarDaysIcon, color: 'bg-green-100', iconColor: 'text-green-700' },
-  { label: 'Active Support Cases', value: 5, icon: UserGroupIcon, color: 'bg-blue-100', iconColor: 'text-blue-700' },
-  { label: 'Sales Pipeline', value: 3, icon: BriefcaseIcon, color: 'bg-yellow-100', iconColor: 'text-yellow-700' },
-  { label: 'Contracts in Progress', value: 4, icon: DocumentTextIcon, color: 'bg-purple-100', iconColor: 'text-purple-700' },
+  { label: 'Upcoming Training Events', value: mockDashboard.upcomingTrainings.length, icon: CalendarDaysIcon, color: 'bg-green-100', iconColor: 'text-green-700' },
+  { label: 'Active Support Cases', value: mockDashboard.activeCases, icon: UserGroupIcon, color: 'bg-blue-100', iconColor: 'text-blue-700' },
+  { label: 'Sales Pipeline', value: mockDashboard.salesPipeline.reduce((a, b) => a + b.count, 0), icon: BriefcaseIcon, color: 'bg-yellow-100', iconColor: 'text-yellow-700' },
+  { label: 'Contracts in Progress', value: mockDashboard.contractProgress.length, icon: DocumentTextIcon, color: 'bg-purple-100', iconColor: 'text-purple-700' },
 ];
 
-const mockEvents = [
-  { date: '2024-07-01', title: 'Foster Carer Training' },
-  { date: '2024-07-05', title: 'Mentor Workshop' },
-];
-
-const mockChart = [
-  { label: 'Leads', value: 10, color: '#22c55e' }, // green-500
-  { label: 'In Progress', value: 5, color: '#eab308' }, // yellow-500
-  { label: 'Closed', value: 3, color: '#3b82f6' }, // blue-500
-];
-
-function getPieChartSegments(data, radius = 60, cx = 80, cy = 80) {
-  const total = data.reduce((sum, d) => sum + d.value, 0);
-  let cumulative = 0;
-  return data.map((d, i) => {
-    const startAngle = (cumulative / total) * 2 * Math.PI;
-    const endAngle = ((cumulative + d.value) / total) * 2 * Math.PI;
-    cumulative += d.value;
-    const x1 = cx + radius * Math.sin(startAngle);
-    const y1 = cy - radius * Math.cos(startAngle);
-    const x2 = cx + radius * Math.sin(endAngle);
-    const y2 = cy - radius * Math.cos(endAngle);
-    const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-    const pathData = [
-      `M ${cx} ${cy}`,
-      `L ${x1} ${y1}`,
-      `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
-      'Z',
-    ].join(' ');
-    return (
-      <path key={d.label} d={pathData} fill={d.color} />
-    );
-  });
-}
+const COLORS = ['#22c55e', '#eab308', '#3b82f6', '#a21caf'];
 
 export default function Dashboard() {
   const { user } = useAuth();
   return (
-    <>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="mb-8 text-lg">Welcome, <span className="font-semibold">{user?.email}</span> ({user?.role})</div>
+    <div className="max-w-7xl mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6 text-left">Dashboard</h1>
+      <div className="mb-8 text-lg text-left">Welcome, <span className="font-semibold">{user?.email}</span> ({user?.role})</div>
+      {/* Summary Widgets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {summary.map((s, i) => {
           const Icon = s.icon;
@@ -73,45 +43,98 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="flex-1">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left: Reminders & Activity */}
+        <div className="col-span-1 flex flex-col gap-8">
           <RemindersWidget />
-        </div>
-        <div className="flex-1">
           <RecentActivityWidget />
         </div>
-      </div>
-      {/* Mocked Pie Chart Widget */}
-      <div className="mb-8 bg-white rounded shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Sales Pipeline Overview</h2>
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          <svg width="160" height="160" viewBox="0 0 160 160">
-            {getPieChartSegments(mockChart)}
-          </svg>
-          <div>
-            {mockChart.map((bar) => (
-              <div key={bar.label} className="flex items-center mb-2">
-                <span className="inline-block w-4 h-4 rounded mr-2" style={{ background: bar.color }}></span>
-                <span className="font-semibold mr-2">{bar.label}</span>
-                <span className="text-gray-500">{bar.value}</span>
+        {/* Right: Charts & Calendar */}
+        <div className="col-span-2 flex flex-col gap-8">
+          {/* Sales Pipeline Chart */}
+          <div className="bg-white rounded shadow p-6 flex flex-col items-center">
+            <h2 className="text-xl font-bold mb-4 self-start">Sales Pipeline Overview</h2>
+            <div className="relative flex items-center justify-center" style={{ width: 220, height: 220 }}>
+              <ResponsiveContainer width={220} height={220}>
+                <PieChart>
+                  <Pie
+                    data={mockDashboard.salesPipeline}
+                    dataKey="count"
+                    nameKey="stage"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={100}
+                    startAngle={210}
+                    endAngle={-30}
+                    paddingAngle={4}
+                  >
+                    <Cell fill="#22c55e" /> {/* Lead - green */}
+                    <Cell fill="#eab308" /> {/* Contacted - yellow */}
+                    <Cell fill="#3b82f6" /> {/* Closed - blue */}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              {/* Center Label */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-3xl font-extrabold text-gray-900">80%+</span>
+                <span className="text-lg text-gray-500 font-semibold">Leads</span>
               </div>
-            ))}
+            </div>
+            {/* Custom Legend */}
+            <div className="flex gap-8 mt-6">
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 rounded-full" style={{ background: "#22c55e" }}></span>
+                <span className="text-sm font-semibold text-gray-700">Lead</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 rounded-full" style={{ background: "#eab308" }}></span>
+                <span className="text-sm font-semibold text-gray-700">Contacted</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 rounded-full" style={{ background: "#3b82f6" }}></span>
+                <span className="text-sm font-semibold text-gray-700">Closed</span>
+              </div>
+            </div>
+          </div>
+          {/* Contract Progress Table */}
+          <div className="bg-white rounded shadow p-6">
+            <h2 className="text-xl font-bold mb-4">Contract Progress</h2>
+            <table className="w-full text-left">
+              <thead>
+                <tr>
+                  <th className="py-2">Contract</th>
+                  <th className="py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockDashboard.contractProgress.map((c, i) => (
+                  <tr key={i} className="border-t">
+                    <td className="py-2 font-semibold">{c.name}</td>
+                    <td className="py-2">
+                      <span className={`px-2 py-1 rounded text-xs font-semibold ${c.status === 'Signed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{c.status}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Upcoming Trainings Calendar/List */}
+          <div className="bg-white rounded shadow p-6">
+            <h2 className="text-xl font-bold mb-4">Upcoming Training Events</h2>
+            <ul>
+              {mockDashboard.upcomingTrainings.map((event, i) => (
+                <li key={i} className="mb-2 flex items-center">
+                  <span className="mr-3 text-green-700">📅</span>
+                  <span className="font-semibold mr-2">{event.date}</span>
+                  <span>{event.title}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
-      {/* Mocked Calendar Widget */}
-      <div className="bg-white rounded shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Upcoming Training Events</h2>
-        <ul>
-          {mockEvents.map((event, i) => (
-            <li key={i} className="mb-2 flex items-center">
-              <span className="mr-3 text-green-700">📅</span>
-              <span className="font-semibold mr-2">{event.date}</span>
-              <span>{event.title}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    </div>
   );
 }
