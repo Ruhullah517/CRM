@@ -42,7 +42,7 @@ const initialMentors = [
 ];
 
 const statusColors = {
-  Active: 'bg-green-100 text-green-800',
+  Active: 'bg-green-100 text-[#2EAB2C]',
   Inactive: 'bg-gray-100 text-gray-700',
   'On Leave': 'bg-yellow-100 text-yellow-800',
 };
@@ -132,7 +132,7 @@ export default function Mentors() {
       <h1 className="text-2xl font-bold mb-6">Mentor Management</h1>
       {isAdminOrStaff && (
         <button
-          className="mb-4 bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 shadow flex items-center gap-2"
+          className="mb-4 bg-[#2EAB2C] text-white px-4 py-2 rounded hover:bg-green-800 shadow flex items-center gap-2"
           onClick={openAdd}
         >
           <PlusIcon className="w-5 h-5" /> Add Mentor
@@ -159,7 +159,7 @@ export default function Mentors() {
               <td className="px-4 py-2 text-[12px]">{m.email}</td>
               <td className="px-4 py-2 text-[12px]">{m.phone}</td>
               <td className="px-4 py-2">
-                {m.skills.map(s => <span key={s} className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">{s}</span>)}
+                {m.skills.map(s => <span key={s} className="inline-block bg-green-100 text-[#2EAB2C] text-xs px-2 py-1 rounded mr-1 mb-1">{s}</span>)}
               </td>
               <td className="px-4 py-2">
                 <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[m.status]}`}>{m.status}</span>
@@ -169,7 +169,7 @@ export default function Mentors() {
               </td>
               {isAdminOrStaff && (
                 <td className="px-4 py-2 text-[12px]">
-                  <button className="text-green-700  hover:underline flex items-center gap-1 mr-2" onClick={() => openEdit(m)}>
+                  <button className="text-[#2EAB2C]  hover:underline flex items-center gap-1 mr-2" onClick={() => openEdit(m)}>
                     <PencilSquareIcon className="w-5 h-5" /> Edit
                   </button>
                   <button className="text-red-600 hover:underline flex items-center gap-1 mr-2" onClick={() => handleDelete(m.id)}>
@@ -228,7 +228,7 @@ export default function Mentors() {
                 <option value="Inactive">Inactive</option>
                 <option value="On Leave">On Leave</option>
               </select>
-              <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 shadow">{form.id ? 'Update' : 'Add'} Mentor</button>
+              <button type="submit" className="w-full bg-[#2EAB2C] text-white py-2 rounded hover:bg-green-800 shadow">{form.id ? 'Update' : 'Add'} Mentor</button>
             </form>
           </div>
         </div>

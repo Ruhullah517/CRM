@@ -54,7 +54,7 @@ export default function EmailTemplates() {
       <h1 className="text-2xl font-bold mb-6">Email Templates</h1>
       {isAdminOrStaff && (
         <button
-          className="mb-4 bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 shadow flex items-center gap-2"
+          className="mb-4 bg-[#2EAB2C] text-white px-4 py-2 rounded hover:bg-green-800 shadow flex items-center gap-2"
           onClick={openAdd}
         >
           <PlusIcon className="w-5 h-5" /> Add Template
@@ -77,7 +77,7 @@ export default function EmailTemplates() {
               <td className="px-4 py-2 text-gray-600 text-sm max-w-xs truncate">{t.body.slice(0, 60)}...</td>
               {isAdminOrStaff && (
                 <td className="px-4 py-2">
-                  <button className="text-green-700 hover:underline flex items-center gap-1" onClick={() => openEdit(t)}>
+                  <button className="text-[#2EAB2C] hover:underline flex items-center gap-1" onClick={() => openEdit(t)}>
                     <PencilSquareIcon className="w-5 h-5" /> Edit
                   </button>
                 </td>
@@ -117,7 +117,7 @@ export default function EmailTemplates() {
                 className="w-full px-4 py-2 border rounded min-h-[120px]"
                 required
               />
-              <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 shadow">{form.id ? 'Update' : 'Add'} Template</button>
+              <button type="submit" className="w-full bg-[#2EAB2C] text-white py-2 rounded hover:bg-green-800 shadow">{form.id ? 'Update' : 'Add'} Template</button>
             </form>
           </div>
         </div>

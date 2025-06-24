@@ -70,7 +70,7 @@ export default function Dashboard() {
                     endAngle={-30}
                     paddingAngle={4}
                   >
-                    <Cell fill="#22c55e" /> {/* Lead - green */}
+                    <Cell fill="#2EAB2C" /> {/* Lead - green */}
                     <Cell fill="#eab308" /> {/* Contacted - yellow */}
                     <Cell fill="#3b82f6" /> {/* Closed - blue */}
                   </Pie>
@@ -85,7 +85,7 @@ export default function Dashboard() {
             {/* Custom Legend */}
             <div className="flex gap-8 mt-6">
               <div className="flex items-center gap-2">
-                <span className="inline-block w-4 h-4 rounded-full" style={{ background: "#22c55e" }}></span>
+                <span className="inline-block w-4 h-4 rounded-full" style={{ background: "#2EAB2C" }}></span>
                 <span className="text-sm font-semibold text-gray-700">Lead</span>
               </div>
               <div className="flex items-center gap-2">

@@ -25,6 +25,7 @@ const navItems = [
   { name: 'Email Templates', path: '/email-templates', roles: ['admin', 'staff'], icon: EnvelopeIcon },
   { name: 'Contract Templates', path: '/contract-templates', roles: ['admin', 'staff'], icon: ClipboardDocumentListIcon },
   { name: 'Mentor Management', path: '/mentors', roles: ['admin', 'staff'], icon: AcademicCapIcon },
+  { name: 'User Management', path: '/users', roles: ['admin'], icon: UserGroupIcon },
 ];
 
 export default function Sidebar() {
@@ -32,9 +33,9 @@ export default function Sidebar() {
   const role = user?.role;
 
   return (
-    <aside className="h-screen w-20 md:w-56 bg-green-700 text-white flex flex-col py-6 px-2 md:px-4 transition-all duration-200">
+    <aside className="h-screen w-20 md:w-56 bg-black text-white flex flex-col py-6 px-2 md:px-4 transition-all duration-200">
       <div className="mb-8 text-2xl font-bold text-center hidden md:block">BFCA CRM</div>
-      <nav className="flex flex-col gap-2">
+      <nav className="flex flex-col gap-0.5">
         {navItems
           .filter(item => role && item.roles.includes(role))
           .map((item) => {
@@ -44,7 +45,7 @@ export default function Sidebar() {
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
-                  `px-4 py-2 rounded hover:bg-green-600 text-[15px] transition flex items-center gap-2 justify-center md:justify-start ${isActive ? 'bg-green-800 font-semibold' : ''}`
+                  `px-4 py-2 rounded hover:bg-green-700 text-[15px] transition flex items-center gap-2 justify-center md:justify-start ${isActive ? 'bg-[#2EAB2C] font-semibold' : ''}`
                 }
               >
                 <Icon className="w-5 h-5" />

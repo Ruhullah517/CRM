@@ -14,6 +14,7 @@ import RecruitmentPipeline from '../pages/RecruitmentPipeline';
 import EmailTemplates from '../pages/EmailTemplates';
 import ContractTemplates from '../pages/ContractTemplates';
 import Mentors from '../pages/Mentors';
+import Users from '../pages/Users';
 
 export default function AppRouter() {
   return (
@@ -33,6 +34,7 @@ export default function AppRouter() {
           <Route path="/email-templates" element={<EmailTemplates />} />
           <Route path="/contract-templates" element={<ContractTemplates />} />
           <Route path="/mentors" element={<Mentors />} />
+          <Route path="/users" element={<Users />} />
         </Route>
       </Routes>
     </BrowserRouter>

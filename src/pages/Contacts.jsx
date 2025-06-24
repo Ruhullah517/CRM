@@ -28,7 +28,7 @@ const initialContacts = [
 ];
 
 const tagColors = {
-  training: 'bg-green-100 text-green-800',
+  training: 'bg-green-100 text-[#2EAB2C]',
   mentoring: 'bg-blue-100 text-blue-800',
   partner: 'bg-yellow-100 text-yellow-800',
   client: 'bg-purple-100 text-purple-800',
@@ -41,7 +41,7 @@ const ContactList = ({ onSelect, onAdd }) => {
     <div className="max-w-5xl mx-auto p-4">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
         <input placeholder="Search contacts..." value={search} onChange={e => setSearch(e.target.value)} className="px-3 py-2 border rounded w-full sm:w-64" />
-        <button onClick={onAdd} className="px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800 transition">Add Contact</button>
+        <button onClick={onAdd} className="px-4 py-2 rounded bg-[#2EAB2C] text-white font-semibold hover:bg-green-800 transition">Add Contact</button>
       </div>
       <div className="overflow-x-auto rounded shadow bg-white">
         <table className="min-w-full text-left">
@@ -79,7 +79,7 @@ const ContactList = ({ onSelect, onAdd }) => {
 
 const ContactDetail = ({ contact, onBack, onEdit }) => (
   <div className="max-w-2xl mx-auto p-4 bg-white rounded shadow mt-6">
-    <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+    <button onClick={onBack} className="mb-4 text-[#2EAB2C] hover:underline">&larr; Back</button>
     <h2 className="text-xl font-bold mb-2">{contact.name}</h2>
     <div className="mb-2"><span className="font-semibold">Type:</span> {contact.type}</div>
     <div className="mb-2"><span className="font-semibold">Email:</span> {contact.email}</div>
@@ -90,20 +90,20 @@ const ContactDetail = ({ contact, onBack, onEdit }) => (
     <div className="mb-2"><span className="font-semibold">Notes:</span> {contact.notes}</div>
     <h3 className="font-semibold mt-4 mb-1">Email History</h3>
     <ul className="mb-2 list-disc ml-6 text-sm">{contact.emailHistory.map(e => <li key={e.id}>{e.subject} <span className="text-gray-400">({e.date})</span></li>)}</ul>
-    <button onClick={onEdit} className="mt-4 px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800">Edit</button>
+    <button onClick={onEdit} className="mt-4 px-4 py-2 rounded bg-[#2EAB2C] text-white font-semibold hover:bg-green-800">Edit</button>
   </div>
 );
 
 const ContactForm = ({ contact, onBack }) => (
   <div className="max-w-xl mx-auto p-4 bg-white rounded shadow mt-6">
-    <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+    <button onClick={onBack} className="mb-4 text-[#2EAB2C] hover:underline">&larr; Back</button>
     <h2 className="text-xl font-bold mb-4">{contact ? "Edit" : "Add"} Contact</h2>
     {/* Placeholder form fields */}
     <form className="space-y-4">
       <input placeholder="Name" defaultValue={contact?.name} className="w-full px-4 py-2 border rounded" />
       <input placeholder="Email" defaultValue={contact?.email} className="w-full px-4 py-2 border rounded" />
       <input placeholder="Tags (comma separated)" defaultValue={contact?.tags?.join(", ")} className="w-full px-4 py-2 border rounded" />
-      <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold">{contact ? "Save" : "Add"}</button>
+      <button type="submit" className="w-full bg-[#2EAB2C] text-white py-2 rounded hover:bg-green-800 font-semibold">{contact ? "Save" : "Add"}</button>
     </form>
   </div>
 );

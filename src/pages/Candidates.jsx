@@ -39,7 +39,7 @@ const mentors = ['John Doe', 'Jane Lee', 'Sarah Brown'];
 
 const statusColors = {
   new: 'bg-gray-200 text-gray-800',
-  active: 'bg-green-100 text-green-800',
+  active: 'bg-green-100 text-[#2EAB2C]',
   paused: 'bg-yellow-100 text-yellow-800',
   completed: 'bg-blue-100 text-blue-800',
 };
@@ -48,7 +48,7 @@ const stageColors = {
   Application: 'bg-yellow-100 text-yellow-700',
   Assessment: 'bg-blue-100 text-blue-700',
   Mentoring: 'bg-purple-100 text-purple-700',
-  Approval: 'bg-green-100 text-green-700',
+  Approval: 'bg-green-100 text-[#2EAB2C]',
 };
 
 const CandidateList = ({ onSelect, onAdd, candidates }) => {
@@ -58,7 +58,7 @@ const CandidateList = ({ onSelect, onAdd, candidates }) => {
     <div className="max-w-5xl mx-auto p-4">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
         <input placeholder="Search candidates..." value={search} onChange={e => setSearch(e.target.value)} className="px-3 py-2 border rounded w-full sm:w-64" />
-        <button onClick={onAdd} className="px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800 transition">Add Candidate</button>
+        <button onClick={onAdd} className="px-4 py-2 rounded bg-[#2EAB2C] text-white font-semibold hover:bg-green-800 transition">Add Candidate</button>
       </div>
       <div className="overflow-x-auto rounded shadow bg-white">
         <table className="min-w-full text-left">
@@ -92,7 +92,7 @@ const CandidateList = ({ onSelect, onAdd, candidates }) => {
 
 const CandidateDetail = ({ candidate, onBack, onEdit }) => (
   <div className="max-w-2xl mx-auto p-4 bg-white rounded shadow mt-6">
-    <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+    <button onClick={onBack} className="mb-4 text-[#2EAB2C] hover:underline">&larr; Back</button>
     <h2 className="text-xl font-bold mb-2">{candidate.name}</h2>
     <div className="mb-2"><span className="font-semibold">Status:</span> <span className={`px-2 py-1 rounded text-xs font-semibold ${statusColors[candidate.status]}`}>{candidate.status}</span></div>
     <div className="mb-2"><span className="font-semibold">Stage:</span> <span className={`px-2 py-1 rounded text-xs font-semibold ${stageColors[candidate.stage]}`}>{candidate.stage}</span></div>
@@ -102,7 +102,7 @@ const CandidateDetail = ({ candidate, onBack, onEdit }) => (
     <ul className="mb-2 list-disc ml-6 text-sm">{candidate.notes.map(n => <li key={n.id}>{n.text} <span className="text-gray-400">({n.date})</span></li>)}</ul>
     <h3 className="font-semibold mb-1">Documents</h3>
     <ul className="mb-2 text-sm">{candidate.documents.map(d => <li key={d.id}><a href={d.url} className="text-blue-700 hover:underline">{d.name}</a></li>)}</ul>
-    <button onClick={onEdit} className="mt-4 px-4 py-2 rounded bg-green-700 text-white font-semibold hover:bg-green-800">Edit</button>
+    <button onClick={onEdit} className="mt-4 px-4 py-2 rounded bg-[#2EAB2C] text-white font-semibold hover:bg-green-800">Edit</button>
   </div>
 );
 
@@ -127,13 +127,13 @@ const CandidateForm = ({ candidate, onBack, onSave }) => {
   }
   return (
     <div className="max-w-xl mx-auto p-4 bg-white rounded shadow mt-6">
-      <button onClick={onBack} className="mb-4 text-green-700 hover:underline">&larr; Back</button>
+      <button onClick={onBack} className="mb-4 text-[#2EAB2C] hover:underline">&larr; Back</button>
       <h2 className="text-xl font-bold mb-4">{candidate ? "Edit" : "Add"} Candidate</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} className="w-full px-4 py-2 border rounded" />
         <input placeholder="Mentor" value={mentor} onChange={e => setMentor(e.target.value)} className="w-full px-4 py-2 border rounded" />
         <input type="date" value={deadline} onChange={e => setDeadline(e.target.value)} className="w-full px-4 py-2 border rounded" />
-        <button type="submit" className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold">{candidate ? "Save" : "Add"}</button>
+        <button type="submit" className="w-full bg-[#2EAB2C] text-white py-2 rounded hover:bg-green-800 font-semibold">{candidate ? "Save" : "Add"}</button>
       </form>
     </div>
   );

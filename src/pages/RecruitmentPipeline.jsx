@@ -67,10 +67,10 @@ export default function RecruitmentPipeline() {
                 return (
                   <div
                     key={c.id}
-                    className="bg-white rounded shadow p-2 flex flex-col items-center border-t-4 border-green-600 min-h-[90px] cursor-pointer hover:bg-green-50 transition"
+                    className="bg-white rounded shadow p-2 flex flex-col items-center border-t-4 border-[#2EAB2C] min-h-[90px] cursor-pointer hover:bg-green-50 transition"
                     onClick={() => openDetail(c)}
                   >
-                    <span className="inline-block w-8 h-8 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-bold mb-1 text-base">
+                    <span className="inline-block w-8 h-8 rounded-full bg-green-200 flex items-center justify-center text-[#2EAB2C] font-bold mb-1 text-base">
                       {c.name[0]}
                     </span>
                     <div className="font-semibold mb-0.5 text-sm text-center">{c.name}</div>
@@ -94,7 +94,7 @@ export default function RecruitmentPipeline() {
                       </button>
                       <button
                         aria-label="Move Right"
-                        className="px-2 py-1 bg-green-600 text-white rounded text-xs font-semibold hover:bg-green-700 disabled:opacity-50"
+                        className="px-2 py-1 bg-[#2EAB2C] text-white rounded text-xs font-semibold hover:bg-green-700 disabled:opacity-50"
                         onClick={e => {
                           e.stopPropagation();
                           moveCandidate(c.id, 1);
